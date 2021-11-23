@@ -1,14 +1,16 @@
+import 'package:mongo_dart/mongo_dart.dart';
+
 class TaskId {
   TaskId({this.taskId});
 
-  String? taskId;
+  ObjectId? taskId;
 
   factory TaskId.fromJson(Map<String, dynamic> json) => TaskId(
-        taskId: json["taskId"] ?? "",
+        taskId: json["_id"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
-        "taskId": taskId,
+        "_id": taskId,
       };
 }
 
@@ -25,7 +27,7 @@ class Task {
     this.priority,
   });
 
-  String? taskId;
+  ObjectId? taskId;
   String? taskName;
   String? description;
   String? assignedBy;
@@ -36,7 +38,7 @@ class Task {
   int? priority;
 
   factory Task.fromJson(Map<String, dynamic> json) => Task(
-        taskId: json["taskId"] ?? "",
+        taskId: json["_id"] ?? "",
         taskName: json["taskName"] ?? "",
         description: json["description"] ?? "",
         assignedBy: json["assignedBy"] ?? "",
@@ -48,7 +50,7 @@ class Task {
       );
 
   Map<String, dynamic> toJson() => {
-        "taskId": taskId,
+        "_id": taskId,
         "taskName": taskName,
         "description": description,
         "startDate": startDate,

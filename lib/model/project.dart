@@ -1,3 +1,4 @@
+import 'package:mongo_dart/mongo_dart.dart';
 import 'package:project_management_app/model/task.dart';
 import 'package:project_management_app/model/user.dart';
 
@@ -12,7 +13,7 @@ class Project {
     this.tasks,
   });
 
-  String? projectId;
+  ObjectId? projectId;
   String? projectName;
   String? description;
   String? startDate;
@@ -21,7 +22,7 @@ class Project {
   List<TaskId?>? tasks;
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
-        projectId: json["projectId"] ?? "",
+        projectId: json["_id"] ?? "",
         projectName: json["projectName"] ?? "",
         description: json["description"] ?? "",
         startDate: json["startDate"] ?? "",
@@ -36,7 +37,7 @@ class Project {
       );
 
   Map<String, dynamic> toJson() => {
-        "projectId": projectId,
+        "_id": projectId,
         "projectName": projectName,
         "description": description,
         "startDate": startDate,

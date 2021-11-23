@@ -1,13 +1,16 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
-class DBConnection {
-  Db? db;
 
-  Future getConnection() async {
-    db=await Db.create(_getConnectionString());
-    await db?.open();
-    final coll=db?.collection('projects');
-    print(await coll?.find().toList());
+class DBConnection {
+  static Db? db;
+  Future<bool> getConnection() async {
+    try {
+      db = await Db.create(_getConnectionString());
+      await db?.open();
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   _getConnectionString() {

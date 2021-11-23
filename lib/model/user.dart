@@ -1,3 +1,4 @@
+import 'package:mongo_dart/mongo_dart.dart';
 import 'package:project_management_app/model/task.dart';
 
 class User {
@@ -7,12 +8,12 @@ class User {
     this.tasks,
   });
 
-  String? userId;
+  ObjectId? userId;
   String? userName;
   List<TaskId?>? tasks;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        userId: json["userId"] ?? "",
+        userId: json["_id"] ?? "",
         userName: json["userName"] ?? "",
         tasks: json["tasks"] != null
             ? List<TaskId>.from(json["tasks"].map((x) => TaskId.fromJson(x)))
@@ -20,7 +21,7 @@ class User {
       );
 
   Map<String, dynamic> toJson() => {
-        "userId": userId,
+        "_id": userId,
         "userName": userName,
         "tasks": List<dynamic>.from(tasks!.map((x) => x?.toJson())),
       };
@@ -32,16 +33,16 @@ class UserRole {
     this.roleId,
   });
 
-  String? userId;
+  ObjectId? userId;
   String? roleId;
 
   factory UserRole.fromJson(Map<String, dynamic> json) => UserRole(
-        userId: json["userId"] ?? "",
+        userId: json["_id"] ?? "",
         roleId: json["roleId"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
-        "userId": userId,
+        "_id": userId,
         "roleId": roleId,
       };
 }
