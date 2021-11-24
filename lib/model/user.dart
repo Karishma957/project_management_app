@@ -34,15 +34,15 @@ class UserRole {
   });
 
   ObjectId? userId;
-  String? roleId;
+  ObjectId? roleId;
 
   factory UserRole.fromJson(Map<String, dynamic> json) => UserRole(
-        userId: json["_id"] ?? "",
-        roleId: json["roleId"] ?? "",
+        userId: json["userId"],
+        roleId: json["roleId"],
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": userId,
+        "userId": userId,
         "roleId": roleId,
       };
 }

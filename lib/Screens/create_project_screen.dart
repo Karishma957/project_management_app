@@ -1,40 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:project_management_app/Screens/projects_screen.dart';
-import 'package:project_management_app/Service/constants.dart';
-import 'package:project_management_app/Store/user_collection.dart';
-import 'package:project_management_app/model/user.dart';
-import 'package:mongo_dart/mongo_dart.dart' as mg;
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class CreateProjectScreen extends StatefulWidget {
+  const CreateProjectScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<CreateProjectScreen> createState() => _CreateProjectScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _CreateProjectScreenState extends State<CreateProjectScreen> {
   TextEditingController nameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
+        title: const Text("Create new Project"),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(
+            height: 8,
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
             child: TextFormField(
               validator: (val) => val!.isEmpty ? 'Enter a name' : null,
               controller: nameController,
               autocorrect: true,
               style: Theme.of(context).textTheme.bodyText1,
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.all(20),
                 border: InputBorder.none,
-                hintText: 'Enter your username',
+                hintText: 'Enter Project name',
+                hintStyle: Theme.of(context).textTheme.bodyText1,
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).accentColor),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                ),
+                filled: true,
+                fillColor: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
+            child: TextFormField(
+              validator: (val) => val!.isEmpty ? 'Enter a description' : null,
+              controller: descriptionController,
+              autocorrect: true,
+              maxLines: 5,
+              style: Theme.of(context).textTheme.bodyText1,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Enter project description',
                 hintStyle: Theme.of(context).textTheme.bodyText1,
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.transparent),
@@ -50,19 +72,12 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 16,
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 primary: Theme.of(context).accentColor),
-            onPressed: () async {
-              Constants.user = (await UserCollection.loginUser(User(
-                  userId: mg.ObjectId(),
-                  userName: nameController.text,
-                  tasks: List.empty())))!;
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (_) => const ProjectsScreen()));
-            },
+            onPressed: () async {},
             child: const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(

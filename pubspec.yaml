@@ -36,9 +36,6 @@ flutter:
         - asset: assets/fonts/Roboto-Regular.ttf
         - asset: assets/fonts/Roboto-Thin.ttf
           weight: 100
-    - family: Rowdies
-      fonts:
-        - asset: assets/fonts/Rowdies-Bold.ttf
 
   # assets:
   #   - images/a_dot_burr.jpeg

@@ -41,12 +41,12 @@ class MyApp extends StatelessWidget {
         textTheme: const TextTheme(
           headline4: TextStyle(
             fontSize: 18.0,
-            fontFamily: 'Rowdies',
+            fontFamily: 'Roboto',
             color: Color.fromRGBO(78, 204, 163, 1),
           ),
           headline6: TextStyle(
             fontSize: 24.0,
-            fontFamily: 'Rowdies',
+            fontFamily: 'Roboto',
             color: Color.fromRGBO(78, 204, 163, 1),
           ),
           bodyText1: TextStyle(
