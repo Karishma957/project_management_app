@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mg;
 import 'package:project_management_app/Screens/create_project_screen.dart';
+import 'package:project_management_app/Screens/tasks_screen.dart';
 import 'package:project_management_app/Service/constants.dart';
 import 'package:project_management_app/Service/db_connection.dart';
 import 'package:project_management_app/Store/project_collection.dart';
+import 'package:project_management_app/Widgets/project_display_widget.dart';
 import 'package:project_management_app/model/project.dart';
 import 'package:project_management_app/model/user.dart';
 
@@ -16,17 +18,6 @@ class ProjectsScreen extends StatefulWidget {
 
 class _ProjectsScreenState extends State<ProjectsScreen> {
   DBConnection database = DBConnection();
-
-  Project p = Project(
-      projectId: mg.ObjectId(),
-      tasks: List.empty(),
-      description: "desc",
-      projectName: "project 5",
-      startDate: null,
-      endDate: null,
-      userRoles: [
-        UserRole(userId: Constants.user.userId, roleId: Constants.user.userId)
-      ]);
   List projectsList = List.empty(growable: true);
 
   @override
@@ -37,16 +28,9 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
 
   getData() async {
     ProjectCollection.getCollection();
-    ProjectCollection.addToCollection(p);
-    print(p.toJson());
     var res = await ProjectCollection.getProjects();
     if (res != null) {
       projectsList = res;
-      // projectsList = res.where((element) {
-      //   return element.userRoles
-      //           .indexWhere((e) => e.userId == Constants.user.userName) !=
-      //       -1;
-      // }).toList();
     }
     setState(() {});
   }
@@ -77,7 +61,20 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
         itemCount: projectsList.length,
         padding: const EdgeInsets.all(8),
         itemBuilder: (context, index) {
-          return Text(projectsList[index].projectName!);
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => TasksScreen(
+                            project: projectsList[index],
+                          )));
+            },
+            child: ProjectDisplayWidget(
+              name: projectsList[index].projectName!,
+              userId: projectsList[index].projectId,
+            ),
+          );
         },
       ),
     );

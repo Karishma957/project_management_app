@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:project_management_app/model/project.dart';
 
 class TasksScreen extends StatelessWidget {
-  const TasksScreen({Key? key}) : super(key: key);
+  final Project project;
+
+  const TasksScreen({Key? key, required this.project}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(project.projectName!),
+      ),
+      body: Container(
+        child: Text(""),
+      ),
+    );
   }
 }
