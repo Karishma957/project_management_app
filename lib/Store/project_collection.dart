@@ -35,6 +35,7 @@ class ProjectCollection {
       final result = await collection.find().toList();
       if (result != null) {
         List res = result.map((e) => Project.fromJson(e)).toList();
+        projectsList.clear();
         res.forEach((element) {
           int i = element.userRoles
               .indexWhere((ele) => ele.userId == Constants.user.userId);
