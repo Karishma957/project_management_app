@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mg;
 import 'package:project_management_app/Service/constants.dart';
+import 'package:project_management_app/Store/project_collection.dart';
 import 'package:project_management_app/Store/user_collection.dart';
 import 'package:project_management_app/Widgets/users_list_widget.dart';
+import 'package:project_management_app/model/project.dart';
+import 'package:project_management_app/model/role.dart';
+import 'package:project_management_app/model/user.dart';
 
 class CreateProjectScreen extends StatefulWidget {
   const CreateProjectScreen({Key? key}) : super(key: key);
@@ -14,16 +19,40 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   DateTime endDate = DateTime.now(), startDate = DateTime.now();
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  int _value = -1;
-  List<int> selectedIndex = List.empty(growable: true);
+  List<UserRole> selectedMembers = List.empty(growable: true);
   List _users = [];
   bool selectMembers = false;
 
   @override
   void initState() {
     _users = UserCollection.users;
+    Role role = Role();
+    role.admin();
+    selectedMembers
+        .add(UserRole(userId: Constants.user.userId, roleId: role.roleId));
     setState(() {});
     super.initState();
+  }
+
+  onMemberSelected(int index, bool isSelected, bool isMember) {
+    if (isSelected) {
+      Role role = Role();
+      isMember ? role.member() : role.coLeader();
+      selectedMembers
+          .add(UserRole(userId: _users[index].userId, roleId: role.roleId));
+    } else {
+      int i = selectedMembers
+          .indexWhere((element) => _users[index].userId == element.userId);
+      selectedMembers.removeAt(i);
+    }
+  }
+
+  onRoleChanged(int index, bool isMember) {
+    Role role = Role();
+    isMember ? role.member() : role.coLeader();
+    int i = selectedMembers
+        .indexWhere((element) => _users[index].userId == element.userId);
+    selectedMembers[i].roleId = role.roleId;
   }
 
   @override
@@ -121,7 +150,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                       firstDate: DateTime.now(),
                     );
                     if (picked != null) {
-                      print(picked);
                       setState(() {
                         startDate = picked.start.toUtc();
                         endDate = picked.end.toUtc();
@@ -210,9 +238,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                               children: _users
                                   .map((e) => e.userId != Constants.user.userId
                                       ? UsersListWidget(
-                                          onClick: () {},
+                                          onClick: onMemberSelected,
+                                          roleChanged: onRoleChanged,
                                           userName: e.userName,
-                                          index: _users.indexOf(e))
+                                          index: _users.indexOf(e),
+                                          edit: true,
+                                        )
                                       : const SizedBox())
                                   .toList(),
                             )
@@ -252,7 +283,20 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).accentColor),
-                onPressed: () async {},
+                onPressed: () async {
+                  await ProjectCollection.addToCollection(
+                    Project(
+                        tasks: [],
+                        userRoles: selectedMembers,
+                        startDate: startDate,
+                        endDate: endDate,
+                        description: descriptionController.text,
+                        projectName: nameController.text,
+                        projectId: mg.ObjectId()),
+                  );
+
+                  Navigator.pop(context);
+                },
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(

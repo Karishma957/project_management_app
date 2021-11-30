@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:project_management_app/model/task.dart';
 import 'package:project_management_app/model/user.dart';
@@ -16,8 +17,8 @@ class Project {
   ObjectId? projectId;
   String? projectName;
   String? description;
-  String? startDate;
-  String? endDate;
+  DateTime? startDate;
+  DateTime? endDate;
   List<UserRole?>? userRoles;
   List<TaskId?>? tasks;
 

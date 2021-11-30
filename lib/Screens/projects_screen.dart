@@ -44,9 +44,12 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
           InkWell(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => const CreateProjectScreen()));
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const CreateProjectScreen()))
+                  .then((value) {
+                getData();
+              });
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 16.0),

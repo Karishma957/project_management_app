@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 
 class UsersListWidget extends StatefulWidget {
   final Function onClick;
+  final Function roleChanged;
   final bool? isMember;
   final String userName;
   final int index;
+  final bool edit;
 
   const UsersListWidget({
     Key? key,
     required this.onClick,
+    required this.roleChanged,
     this.isMember,
     required this.userName,
     required this.index,
+    required this.edit,
   }) : super(key: key);
 
   @override
@@ -20,7 +24,7 @@ class UsersListWidget extends StatefulWidget {
 
 class _UsersListWidgetState extends State<UsersListWidget> {
   bool isSelected = false;
-  List<bool> roleSelected = [false, true];
+  bool isMember = true;
 
   @override
   void initState() {
@@ -32,9 +36,12 @@ class _UsersListWidgetState extends State<UsersListWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        setState(() {
-          isSelected = !isSelected;
-        });
+        if (widget.edit) {
+          setState(() {
+            isSelected = !isSelected;
+            widget.onClick(widget.index, isSelected, isMember);
+          });
+        }
       },
       child: ListTile(
         leading: CircleAvatar(
@@ -42,7 +49,7 @@ class _UsersListWidgetState extends State<UsersListWidget> {
           child: isSelected
               ? Icon(Icons.check_rounded, color: Theme.of(context).accentColor)
               : Text(
-                  '${widget.index}',
+                  widget.userName[0],
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1
@@ -57,23 +64,32 @@ class _UsersListWidgetState extends State<UsersListWidget> {
               style: Theme.of(context).textTheme.bodyText1,
             ),
             if (isSelected)
-              ToggleButtons(
-                selectedColor: Theme.of(context).accentColor,
-                isSelected: roleSelected,
-                children: const [
-                  Text(
-                    "Member",
-                  ),
-                  Text(
-                    "Co-leader",
-                  ),
-                ],
-                onPressed: (int index) {
-                  setState(() {
-                    roleSelected[index] = !roleSelected[index];
-                  });
-                  print(roleSelected);
+              InkWell(
+                onTap: () {
+                  if (widget.edit) {
+                    setState(() {
+                      isMember = !isMember;
+                      widget.roleChanged(widget.index, isMember);
+                    });
+                  }
                 },
+                child: Container(
+                  margin: const EdgeInsets.only(top: 4),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Theme.of(context).accentColor),
+                    borderRadius: const BorderRadius.all(Radius.circular(16)),
+                    color: Theme.of(context).backgroundColor,
+                  ),
+                  child: Text(
+                    isMember ? "Member" : "Co-leader",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        ?.copyWith(color: Theme.of(context).accentColor),
+                  ),
+                ),
               )
           ],
         ),
