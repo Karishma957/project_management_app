@@ -1,4 +1,5 @@
 import 'package:mongo_dart/mongo_dart.dart' as mg;
+import 'package:project_management_app/Service/constants.dart';
 import 'package:project_management_app/Service/db_connection.dart';
 import 'package:project_management_app/model/project.dart';
 import 'package:project_management_app/model/task.dart';
@@ -33,7 +34,12 @@ class ProjectCollection {
     try {
       final result = await collection.find().toList();
       if (result != null) {
-        projectsList = result.map((e) => Project.fromJson(e)).toList();
+        List res = result.map((e) => Project.fromJson(e)).toList();
+        res.forEach((element) {
+          int i = element.userRoles
+              .indexWhere((ele) => ele.userId == Constants.user.userId);
+          if (i != -1) projectsList.add(element);
+        });
       }
     } catch (e) {}
   }

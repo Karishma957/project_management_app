@@ -25,6 +25,12 @@ class TaskCollection {
     await collection?.save(old);
   }
 
+  static Future updateStatus(mg.ObjectId taskId, bool status) async {
+    var old = await collection?.findOne({"_id": taskId});
+    old["status"] = status;
+    await collection?.save(old);
+  }
+
   static delete(Task task) async {
     await collection?.remove(mg.where.id(task.taskId!));
   }
@@ -35,7 +41,6 @@ class TaskCollection {
       if (result != null) {
         tasks = result.map((e) => Task.fromJson(e)).toList();
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 }

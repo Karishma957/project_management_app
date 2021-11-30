@@ -67,6 +67,24 @@ class _TasksScreenState extends State<TasksScreen> {
       appBar: AppBar(
         title: Text(project.projectName!),
         actions: [
+          myRole == "Admin" || myRole == "Co-leader"
+              ? InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => CreateTaskScreen(
+                                  members: project.userRoles == null
+                                      ? []
+                                      : project.userRoles!,
+                                  projectId: project.projectId!,
+                                ))).then((value) {
+                      getData(true);
+                    });
+                  },
+                  child: Icon(Icons.add, color: Theme.of(context).accentColor),
+                )
+              : const SizedBox(),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
@@ -80,45 +98,6 @@ class _TasksScreenState extends State<TasksScreen> {
           )
         ],
       ),
-      floatingActionButton: myRole == "Admin" || myRole == "Co-leader"
-          ? InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => CreateTaskScreen(
-                              members: project.userRoles == null
-                                  ? []
-                                  : project.userRoles!,
-                              projectId: project.projectId!,
-                            ))).then((value) {
-                  getData(true);
-                });
-              },
-              child: Row(
-                children: [
-                  const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(30)),
-                      color: Theme.of(context).accentColor,
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.add, color: Colors.white),
-                        Text(
-                          " Assign Task ",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-            )
-          : const SizedBox(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -260,9 +239,12 @@ class _TasksScreenState extends State<TasksScreen> {
                   ),
                 ),
               ),
-            Column(
-              children:
-                  tasksList.map((e) => TaskDisplayWidget(task: e)).toList(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                children:
+                    tasksList.map((e) => TaskDisplayWidget(task: e)).toList(),
+              ),
             )
           ],
         ),
