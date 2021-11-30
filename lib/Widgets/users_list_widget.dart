@@ -7,6 +7,7 @@ class UsersListWidget extends StatefulWidget {
   final String userName;
   final int index;
   final bool edit;
+  final bool? isAdmin;
 
   const UsersListWidget({
     Key? key,
@@ -16,6 +17,7 @@ class UsersListWidget extends StatefulWidget {
     required this.userName,
     required this.index,
     required this.edit,
+    this.isAdmin,
   }) : super(key: key);
 
   @override
@@ -28,7 +30,7 @@ class _UsersListWidgetState extends State<UsersListWidget> {
 
   @override
   void initState() {
-    if (widget.isMember != null) isSelected = widget.isMember!;
+    if (widget.edit) if (widget.isMember != null) isSelected = widget.isMember!;
     super.initState();
   }
 
@@ -90,7 +92,29 @@ class _UsersListWidgetState extends State<UsersListWidget> {
                         ?.copyWith(color: Theme.of(context).accentColor),
                   ),
                 ),
-              )
+              ),
+            if (!widget.edit)
+              Container(
+                margin: const EdgeInsets.only(top: 4),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Theme.of(context).accentColor),
+                  borderRadius: const BorderRadius.all(Radius.circular(16)),
+                  color: Theme.of(context).backgroundColor,
+                ),
+                child: Text(
+                  widget.isMember!
+                      ? "Member"
+                      : widget.isAdmin!
+                          ? "Admin"
+                          : "Co-leader",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      ?.copyWith(color: Theme.of(context).accentColor),
+                ),
+              ),
           ],
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:mongo_dart/mongo_dart.dart' as mg;
 import 'package:project_management_app/Screens/login.dart';
 import 'package:project_management_app/Screens/projects_screen.dart';
 import 'package:project_management_app/Service/db_connection.dart';
+import 'package:project_management_app/Store/task_collection.dart';
 import 'package:project_management_app/Store/user_collection.dart';
 import 'package:project_management_app/model/user.dart';
 
@@ -28,6 +29,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (await database.getConnection()) {
       UserCollection.getCollection();
       await UserCollection.getUsers();
+      TaskCollection.getCollection();
       setState(() {
         isLoading = false;
       });

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_management_app/Screens/create_task_screen.dart';
 import 'package:project_management_app/Service/constants.dart';
 import 'package:project_management_app/Store/user_collection.dart';
 import 'package:project_management_app/Widgets/users_list_widget.dart';
@@ -56,27 +57,39 @@ class _TasksScreenState extends State<TasksScreen> {
         ],
       ),
       floatingActionButton: myRole == "Admin" || myRole == "Co-leader"
-          ? Row(
-              children: [
-                const Spacer(),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(30)),
-                    color: Theme.of(context).accentColor,
+          ? InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => CreateTaskScreen(
+                              members: widget.project.userRoles == null
+                                  ? []
+                                  : widget.project.userRoles!,
+                            ))).then((value) {});
+              },
+              child: Row(
+                children: [
+                  const Spacer(),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(30)),
+                      color: Theme.of(context).accentColor,
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.add, color: Colors.white),
+                        Text(
+                          " Assign Task ",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.add, color: Colors.white),
-                      Text(
-                        " Assign Task ",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-              ],
+                  const Spacer(),
+                ],
+              ),
             )
           : const SizedBox(),
       body: Column(
@@ -204,8 +217,9 @@ class _TasksScreenState extends State<TasksScreen> {
                                   return UsersListWidget(
                                       onClick: () {},
                                       roleChanged: () {},
+                                      isAdmin: Role.isAdmin(e!.roleId!),
                                       userName: u.userName,
-                                      isMember: Role.isMember(e!.roleId!),
+                                      isMember: Role.isMember(e.roleId!),
                                       index:
                                           widget.project.userRoles!.indexOf(e),
                                       edit: false);

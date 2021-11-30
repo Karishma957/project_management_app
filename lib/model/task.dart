@@ -30,11 +30,11 @@ class Task {
   ObjectId? taskId;
   String? taskName;
   String? description;
-  String? assignedBy;
-  String? assignedTo;
+  ObjectId? assignedBy;
+  ObjectId? assignedTo;
   bool? status;
-  String? startDate;
-  String? endDate;
+  DateTime? startDate;
+  DateTime? endDate;
   int? priority;
 
   factory Task.fromJson(Map<String, dynamic> json) => Task(

@@ -8,7 +8,7 @@ class Role {
   static bool isMember(ObjectId o) {
     return o ==
         ObjectId.fromBsonBinary(
-            BsonBinary.fromHexString("00000001347ad1ccbd4b6a15"));
+            BsonBinary.fromHexString("00000002347ad1ccbd4b6a15"));
   }
 
   static bool isAdmin(ObjectId o) {
