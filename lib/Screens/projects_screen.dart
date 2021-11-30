@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mongo_dart/mongo_dart.dart' as mg;
 import 'package:project_management_app/Screens/create_project_screen.dart';
 import 'package:project_management_app/Screens/tasks_screen.dart';
 import 'package:project_management_app/Service/constants.dart';
 import 'package:project_management_app/Service/db_connection.dart';
 import 'package:project_management_app/Store/project_collection.dart';
 import 'package:project_management_app/Widgets/project_display_widget.dart';
-import 'package:project_management_app/model/project.dart';
-import 'package:project_management_app/model/user.dart';
 
 class ProjectsScreen extends StatefulWidget {
   const ProjectsScreen({Key? key}) : super(key: key);
@@ -28,10 +25,10 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
 
   getData() async {
     ProjectCollection.getCollection();
-    var res = await ProjectCollection.getProjects();
-    if (res != null) {
-      projectsList = res;
-    }
+    await ProjectCollection.getProjects();
+    var res = ProjectCollection.projectsList;
+    projectsList = res;
+
     setState(() {});
   }
 
@@ -70,7 +67,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (_) => TasksScreen(
-                            project: projectsList[index],
+                            pr: projectsList[index],
                           )));
             },
             child: ProjectDisplayWidget(

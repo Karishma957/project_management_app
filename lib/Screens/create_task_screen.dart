@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mg;
 import 'package:project_management_app/Service/constants.dart';
+import 'package:project_management_app/Store/project_collection.dart';
 import 'package:project_management_app/Store/task_collection.dart';
 import 'package:project_management_app/Store/user_collection.dart';
 import 'package:project_management_app/model/task.dart';
 import 'package:project_management_app/model/user.dart';
 
 class CreateTaskScreen extends StatefulWidget {
+  final mg.ObjectId projectId;
   final List members;
 
-  const CreateTaskScreen({Key? key, required this.members}) : super(key: key);
+  const CreateTaskScreen(
+      {Key? key, required this.members, required this.projectId})
+      : super(key: key);
 
   @override
   State<CreateTaskScreen> createState() => _CreateTaskScreenState();
@@ -298,17 +302,19 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).accentColor),
                 onPressed: () async {
+                  mg.ObjectId id = mg.ObjectId();
                   await TaskCollection.addToCollection(Task(
                       taskName: nameController.text,
                       description: descriptionController.text,
                       startDate: startDate,
                       endDate: endDate,
-                      status: false,
+                      status: true,
                       priority: 1,
                       assignedBy: Constants.user.userId,
                       assignedTo: selectedMember!.userId!,
-                      taskId: mg.ObjectId()));
-                  TaskCollection.printCollection();
+                      taskId: id));
+                  await UserCollection.update(selectedMember!.userId!, id);
+                  await ProjectCollection.update(widget.projectId, id);
                   Navigator.pop(context);
                 },
                 child: const Padding(

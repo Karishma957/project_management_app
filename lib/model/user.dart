@@ -10,7 +10,7 @@ class User {
 
   ObjectId? userId;
   String? userName;
-  List<TaskId?>? tasks;
+  List<TaskId?>? tasks = [];
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         userId: json["_id"] ?? "",

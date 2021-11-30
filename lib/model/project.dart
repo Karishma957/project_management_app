@@ -19,8 +19,8 @@ class Project {
   String? description;
   DateTime? startDate;
   DateTime? endDate;
-  List<UserRole?>? userRoles;
-  List<TaskId?>? tasks;
+  List<UserRole?>? userRoles=[];
+  List<TaskId?>? tasks=[];
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
         projectId: json["_id"] ?? "",

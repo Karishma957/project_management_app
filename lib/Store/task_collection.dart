@@ -5,6 +5,7 @@ import 'package:project_management_app/model/task.dart';
 
 class TaskCollection {
   static var collection;
+  static List tasks = List.empty(growable: true);
 
   static getCollection() {
     collection = DBConnection.db?.collection('tasks');
@@ -28,14 +29,13 @@ class TaskCollection {
     await collection?.remove(mg.where.id(task.taskId!));
   }
 
-  static Future<List?> getProjects() async {
+  static Future getTasks() async {
     try {
       final result = await collection.find().toList();
       if (result != null) {
-        return result.map((e) => Task.fromJson(e)).toList();
+        tasks = result.map((e) => Task.fromJson(e)).toList();
       }
     } catch (e) {
-      print(e);
     }
   }
 }

@@ -30,6 +30,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       UserCollection.getCollection();
       await UserCollection.getUsers();
       TaskCollection.getCollection();
+      await TaskCollection.getTasks();
       setState(() {
         isLoading = false;
       });

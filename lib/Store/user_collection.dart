@@ -1,4 +1,5 @@
 import 'package:project_management_app/Service/db_connection.dart';
+import 'package:project_management_app/model/task.dart';
 import 'package:project_management_app/model/user.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mg;
 
@@ -33,9 +34,9 @@ class UserCollection {
     return u;
   }
 
-  static update(User user) async {
-    var old = await collection?.findOne({"_id": user.userId});
-    old["userName"] = "bleh";
+  static Future update(mg.ObjectId user, mg.ObjectId taskId) async {
+    var old = await collection?.findOne({"_id": user});
+    old["tasks"].add(TaskId(taskId: taskId).toJson());
     await collection?.save(old);
   }
 
@@ -48,7 +49,6 @@ class UserCollection {
       final result = await collection.find().toList();
       if (result != null) users = result.map((e) => User.fromJson(e)).toList();
     } catch (e) {
-      print(e);
     }
   }
 }
