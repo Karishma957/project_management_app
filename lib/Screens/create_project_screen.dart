@@ -25,6 +25,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   @override
   void initState() {
+    getData();
     _users = UserCollection.users;
     Role role = Role();
     role.admin();
@@ -32,6 +33,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         .add(UserRole(userId: Constants.user.userId, roleId: role.roleId));
     setState(() {});
     super.initState();
+  }
+
+  getData() async {
+    await UserCollection.getUsers();
   }
 
   onMemberSelected(int index, bool isSelected, bool isMember) {

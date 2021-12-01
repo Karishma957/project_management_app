@@ -68,7 +68,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                   MaterialPageRoute(
                       builder: (_) => TasksScreen(
                             pr: projectsList[index],
-                          )));
+                          ))).then((value) => getData());
             },
             child: ProjectDisplayWidget(
               name: projectsList[index].projectName!,
