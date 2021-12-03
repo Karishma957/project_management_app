@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_management_app/Screens/create_project_screen.dart';
+import 'package:project_management_app/Screens/profile_page.dart';
 import 'package:project_management_app/Screens/tasks_screen.dart';
 import 'package:project_management_app/Service/constants.dart';
 import 'package:project_management_app/Service/db_connection.dart';
@@ -36,7 +37,12 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Constants.user.userName ?? ""),
+        title: InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const ProfilePage()));
+            },
+            child: Text(Constants.user.userName ?? "")),
         actions: [
           InkWell(
             onTap: () {

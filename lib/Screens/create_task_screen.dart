@@ -303,7 +303,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     primary: Theme.of(context).accentColor),
                 onPressed: () async {
                   mg.ObjectId id = mg.ObjectId();
-                  await TaskCollection.addToCollection(Task(
+                  Task t = Task(
                       taskName: nameController.text,
                       description: descriptionController.text,
                       startDate: startDate,
@@ -312,9 +312,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       priority: 1,
                       assignedBy: Constants.user.userId,
                       assignedTo: selectedMember!.userId!,
-                      taskId: id));
+                      taskId: id);
+                  await TaskCollection.addToCollection(t);
                   await UserCollection.update(selectedMember!.userId!, id);
                   await ProjectCollection.update(widget.projectId, id);
+                  Constants.user.tasks?.add(TaskId(taskId: id));
                   Navigator.pop(context);
                 },
                 child: const Padding(
